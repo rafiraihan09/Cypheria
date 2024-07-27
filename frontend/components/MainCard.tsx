@@ -8,16 +8,15 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import Nameplate from "@/components/Nameplate";
-import { Button } from "@/components/ui/button";
 import { BadgeItem } from "@/types/badgeItem";
 import InterestsBadge from "@/components/InterestsBadge";
+import TopicGenerator from "./TopicGenerator";
 
 // Constants
 const API_URL = "http://192.168.137.33:3000/topics/drivers/1/passengers/2";
 const DEFAULT_VARIANT = "default";
-const OUTLINE_VARIANT = "outline";
+const OUTLINE_VARIANT = "secondary";
 const BASE64_IMAGE_PREFIX = "data:image/jpeg;base64,";
-const GENERATE_TOPIC_TEXT = "Generate Topic";
 const SUCCESS_MESSAGE = "success";
 
 type Props = {};
@@ -67,15 +66,15 @@ const MainCard: React.FC<Props> = () => {
   };
 
   return (
-    <Card className="max-w-sm">
+    <Card className="w-full h-screen max-w-md mx-auto flex flex-col">
       <CardHeader>
         <Nameplate name={driverName} imageUrl={driverImage} />
       </CardHeader>
-      <CardContent className="mb-20">
+      <CardContent className="flex-1 mb-4">
         <InterestsBadge badges={badges} onBadgeClick={handleBadgeClick} />
       </CardContent>
-      <CardFooter className="flex flex-col items-center">
-        <Button>{GENERATE_TOPIC_TEXT}</Button>
+      <CardFooter className="flex flex-col items-center pb-4">
+        <TopicGenerator audioSrc="/music.wav" />
       </CardFooter>
     </Card>
   );
