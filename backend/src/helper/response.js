@@ -1,6 +1,6 @@
 module.exports = {
     responseBuilder: function(message, data, error = {}) {
-        if(error == {}) {
+        if(message == 'success') {
             return {
                 message,
                 data
