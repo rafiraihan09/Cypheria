@@ -10,10 +10,11 @@ import {
 import Nameplate from "@/components/Nameplate";
 import { BadgeItem } from "@/types/badgeItem";
 import InterestsBadge from "@/components/InterestsBadge";
-import TopicGenerator from "./TopicGenerator";
+import { Button } from "@/components/ui/button";
 
 // Constants
-const API_URL = "http://192.168.137.33:3000/topics/drivers/1/passengers/2";
+const API_URL = "http://192.168.137.33:3001/topics/drivers/1/passengers/2";
+const START_TOPIC_URL = "http://192.168.137.33:3001/start-topic"; // Add your endpoint here
 const DEFAULT_VARIANT = "default";
 const OUTLINE_VARIANT = "secondary";
 const BASE64_IMAGE_PREFIX = "data:image/jpeg;base64,";
@@ -25,6 +26,8 @@ const MainCard: React.FC<Props> = () => {
   const [badges, setBadges] = useState<BadgeItem[]>([]);
   const [driverName, setDriverName] = useState<string>("");
   const [driverImage, setDriverImage] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false); // Manage loading state if needed
+  const [error, setError] = useState<string | null>(null); // Manage error state if needed
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +68,25 @@ const MainCard: React.FC<Props> = () => {
     );
   };
 
+  const handleStartTopicClick = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(START_TOPIC_URL);
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      const result = await response.json();
+      // Handle result as needed
+      console.log("Started topic:", result);
+    } catch (error) {
+      console.error("Error starting topic:", error);
+      setError("Failed to start the topic. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card className="w-full h-screen max-w-md mx-auto flex flex-col">
       <CardHeader>
@@ -74,7 +96,10 @@ const MainCard: React.FC<Props> = () => {
         <InterestsBadge badges={badges} onBadgeClick={handleBadgeClick} />
       </CardContent>
       <CardFooter className="flex flex-col items-center pb-4">
-        <TopicGenerator audioSrc="/music.wav" />
+        <Button onClick={handleStartTopicClick} disabled={loading}>
+          {loading ? "Starting..." : "Start a Topic!"}
+        </Button>
+        {error && <p className="text-red-500 mt-2">{error}</p>}
       </CardFooter>
     </Card>
   );
