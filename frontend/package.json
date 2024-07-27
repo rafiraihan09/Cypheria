@@ -21,7 +21,8 @@
     "react-virtualized": "^9.22.5",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "wavesurfer.js": "^7.8.2"
+    "wavesurfer.js": "^7.8.2",
+    "websocket": "^1.0.35"
   },
   "devDependencies": {
     "@types/node": "^20",

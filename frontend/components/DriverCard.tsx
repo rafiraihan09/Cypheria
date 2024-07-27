@@ -1,32 +1,59 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import { BadgeItem } from "@/types/badgeItem";
 import TopicGenerator from "./TopicGenerator";
 
-// Constants
-const API_URL = "http://192.168.137.33:3000/topics/drivers/1/passengers/2";
-const DEFAULT_VARIANT = "default";
-const OUTLINE_VARIANT = "secondary";
-const BASE64_IMAGE_PREFIX = "data:image/jpeg;base64,";
-const SUCCESS_MESSAGE = "success";
+type Props = {
+  driverId: number;
+};
 
-type Props = {};
+const DriverCard: React.FC<Props> = ({ driverId }) => {
+  useEffect(() => {
+    const ws = new WebSocket(`ws://192.168.137.33:8080`);
 
-const MainCard: React.FC<Props> = () => {
+    ws.onopen = () => {
+      ws.send(driverId.toString());
+      console.log(`WebSocket connection opened for driverId: ${driverId}`);
+    };
+
+    ws.onmessage = (event) => {
+      console.log(event);
+      const message = JSON.parse(event.data);
+      console.log("Message from server:", message);
+
+      if (message.type === "filepath") {
+        const audioUrl = `https://192.168.137.33:3001${message.data}`;
+        const audio = new Audio(audioUrl);
+        audio.play().catch((error) => {
+          console.error("Error playing audio:", error);
+        });
+      }
+    };
+
+    ws.onclose = () => {
+      console.log(`WebSocket connection closed for driverId: ${driverId}`);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [driverId]);
 
   return (
     <Card className="w-full h-screen max-w-md mx-auto flex flex-col">
       <CardHeader className="items-center">
-        <div className="text-2xl font-bold items-center">Driver Application</div>
+        <div className="text-2xl font-bold items-center">
+          Driver Application
+        </div>
       </CardHeader>
       <CardContent className="flex-1 mb-4">
+        {/* Additional content can be added here */}
       </CardContent>
       <CardFooter className="flex flex-col items-center pb-4">
         <TopicGenerator audioSrc="/music.wav" />
@@ -35,4 +62,4 @@ const MainCard: React.FC<Props> = () => {
   );
 };
 
-export default MainCard;
+export default DriverCard;
