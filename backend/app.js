@@ -7,6 +7,7 @@ var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 const websocket = require('./src/config/websocket');
+require('dotenv').config();
 
 var app = express();
 

@@ -44,7 +44,7 @@ module.exports = {
         if (rooms[room]) {
             rooms[room].forEach((client) => {
                 if (client.readyState === WebSocket.OPEN) {
-                    client.send(JSON.stringify({ type: "message", message }));
+                    client.send(JSON.stringify({ type: "filepath", data: message }));
                 }
             });
             console.log(`Message sent to room ${room}`);
