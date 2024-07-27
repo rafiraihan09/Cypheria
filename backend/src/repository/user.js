@@ -1,4 +1,4 @@
-const knex = require('knex');
+const knex = require('../config/database');
 const TAG = 'USER_REPOSITORY';
 
 module.exports = {
@@ -6,13 +6,14 @@ module.exports = {
         try {
             let userTopicsRaw = await knex.select('topics', 'user_id').from('users').where({
                 user_id: userID
-            });
+            }).first();
 
             let userTopics = userTopicsRaw.topics.split(';');
 
             return userTopics;
         } catch (err) {
             console.log(`${TAG} getUserTopicsByUserID ${err.message}`)
+            throw err;
         }
     }
 }

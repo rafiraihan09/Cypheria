@@ -1,3 +1,4 @@
+const { responseBuilder } = require('../helper/response')
 const topicService = require('../service/topic')
 
 module.exports = {
@@ -8,12 +9,13 @@ module.exports = {
 
             let data = await topicService.getMatchedTopics(driverID, passengerID)
 
-            return res.json({
-                data
-            })
+            let response = responseBuilder('success', data)
+
+            return res.status(200).json(response)
         } catch (err) {
             console.log(err);
-            throw new Error(err)
+            let response = responseBuilder('error', {}, err);
+            return res.status(500).json(response);
         }
 
     }

@@ -7,15 +7,29 @@ module.exports = {
             let driverTopics = await userRepository.getUserTopicsByUserID(driverID)
             let passengerTopics = await userRepository.getUserTopicsByUserID(passengerID)
 
-            let result = {
-                driverTopics,
-                passengerTopics
+            let anyMatched = false
+            let result = []
+
+            for(const topic of driverTopics) {
+                let match = passengerTopics.includes(topic)
+
+                if (match) {
+                    anyMatched = match
+                }
+
+                result.push({
+                    topic,
+                    match
+                })
             }
 
-            return result
+            return {
+                anyMatched,
+                topics: result
+            }
         } catch (err) {
             console.log(`${TAG} getMatchedTopics [${err.message}]`)
-            throw new Error(err)
+            throw err;
         }
     }
 }
