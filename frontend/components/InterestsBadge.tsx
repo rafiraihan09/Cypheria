@@ -18,7 +18,7 @@ type Props = {
 
 const InterestsBadge: React.FC<Props> = ({ badges }) => {
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="flex flex-wrap justify-center gap-2">
       {badges.map((badge, index) => (
         <Badge key={index} variant={badge.variant}>
           {badge.content}
