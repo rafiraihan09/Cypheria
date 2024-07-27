@@ -18,7 +18,7 @@ const Nameplate = (props: Props) => {
           </AvatarFallback>
         </Avatar>
       </div>
-      <div className="text-lg font-bold">John Doe</div>
+      <div className="text-3xl font-bold">John Doe</div>
     </div>
   );
 };
