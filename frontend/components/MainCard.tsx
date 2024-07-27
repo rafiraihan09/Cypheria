@@ -1,18 +1,23 @@
 import React from "react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import Nameplate from "@/components/Nameplate";
 import { Button } from "@/components/ui/button";
+import { BadgeItem } from "@/types/badgeItem";
 import InterestsBadge from "@/components/InterestsBadge";
 
 type Props = {};
+
+const badges: BadgeItem[] = [
+  { content: "Tes", variant: "outline" as const },
+  { content: "Tes1", variant: "outline" as const },
+  { content: "Programming", variant: "outline" as const },
+  { content: "Gaming", variant: "outline" as const },
+];
 
 const MainCard = (props: Props) => {
   return (
@@ -20,17 +25,10 @@ const MainCard = (props: Props) => {
       <CardHeader>
         <Nameplate />
       </CardHeader>
-      <CardContent>
-        <InterestsBadge
-          badges={[
-            { content: "Tes", variant: "outline" },
-            { content: "Tes1", variant: "outline" },
-            { content: "Programming", variant: "outline" },
-            { content: "Gaming", variant: "outline" },
-          ]}
-        />
+      <CardContent className="mb-20">
+        <InterestsBadge badges={badges} />
       </CardContent>
-      <CardFooter className="flex flex-col items-center gap-2">
+      <CardFooter className="flex flex-col items-center">
         <Button>Start conversation</Button>
       </CardFooter>
     </Card>
