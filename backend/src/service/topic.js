@@ -57,7 +57,7 @@ module.exports = {
             throw err;
         }
 
-        let driverImage64 = readFileAsBase64('/files/images/grab-ojol.jpg')
+        let driverImage64 = readFileAsBase64(driverProfile.image)
 
         return {
             driverName: driverProfile.name,
