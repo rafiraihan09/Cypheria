@@ -1,9 +1,9 @@
-import MainCard from "@/components/MainCard";
+import DriverCard from "@/components/DriverCard";
 
 export default function Home() {
   return (
     <main className="flex items-center justify-center h-screen">
-      <MainCard />
+      <DriverCard />
     </main>
   );
 }
