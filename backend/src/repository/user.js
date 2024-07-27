@@ -15,5 +15,10 @@ module.exports = {
             console.log(`${TAG} getUserTopicsByUserID ${err.message}`)
             throw err;
         }
+    },
+    getUserByID: async (userID) => {
+        return await knex.select('*').from('users').where({
+            user_id: userID
+        }).first();
     }
 }

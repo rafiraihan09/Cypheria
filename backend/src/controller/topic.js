@@ -8,6 +8,9 @@ module.exports = {
             let passengerID = req.params.passenger_id
 
             let data = await topicService.getMatchedTopics(driverID, passengerID)
+            let driver = await topicService.getDriverProfile(driverID)
+
+            data = {...data, ...driver}
 
             let response = responseBuilder('success', data)
 
