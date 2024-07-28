@@ -14,7 +14,8 @@ import { Button } from "@/components/ui/button";
 
 // Constants
 const API_URL = "http://192.168.137.33:3001/topics/drivers/1/passengers/2";
-const START_TOPIC_URL = "http://192.168.137.33:3001/start-topic"; // Add your endpoint here
+const BASE_START_TOPIC_URL =
+  "http://192.168.137.33:3001/conversation/start/drivers/1/passengers/2/topics"; // Updated endpoint base URL
 const DEFAULT_VARIANT = "default";
 const OUTLINE_VARIANT = "secondary";
 const BASE64_IMAGE_PREFIX = "data:image/jpeg;base64,";
@@ -71,17 +72,31 @@ const MainCard: React.FC<Props> = () => {
   const handleStartTopicClick = async () => {
     setLoading(true);
     setError(null);
+
+    // Collect chosen badges
+    const chosenBadges = badges
+      .filter((badge) => badge.variant === DEFAULT_VARIANT)
+      .map((badge) => badge.content);
+
+    // Create query string
+    const queryString = new URLSearchParams({
+      chosen_topics: JSON.stringify(chosenBadges),
+    }).toString();
+    const urlWithParams = `${BASE_START_TOPIC_URL}/${queryString}`;
+
     try {
-      const response = await fetch(START_TOPIC_URL);
+      const response = await fetch(urlWithParams, {
+        method: "GET",
+      });
       if (!response.ok) {
         throw new Error("Network response was not ok.");
       }
       const result = await response.json();
       // Handle result as needed
-      console.log("Started topic:", result);
+      console.log("Started topics:", result);
     } catch (error) {
-      console.error("Error starting topic:", error);
-      setError("Failed to start the topic. Please try again.");
+      console.error("Error starting topics:", error);
+      setError("Failed to start the topics. Please try again.");
     } finally {
       setLoading(false);
     }
