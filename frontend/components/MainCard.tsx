@@ -79,10 +79,10 @@ const MainCard: React.FC<Props> = () => {
       .map((badge) => badge.content);
 
     // Create query string
-    const queryString = new URLSearchParams({
-      chosen_topics: JSON.stringify(chosenBadges),
-    }).toString();
-    const urlWithParams = `${BASE_START_TOPIC_URL}/${queryString}`;
+    // const queryString = new URLSearchParams({
+    //   chosen_topics: chosenBadges[0],
+    // }).toString();
+    const urlWithParams = `${BASE_START_TOPIC_URL}/${chosenBadges[0]}`;
 
     try {
       const response = await fetch(urlWithParams, {
