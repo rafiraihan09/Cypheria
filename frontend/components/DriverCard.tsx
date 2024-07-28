@@ -1,19 +1,20 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
-import TopicGenerator from "./TopicGenerator";
 
 type Props = {
   driverId: number;
 };
 
 const DriverCard: React.FC<Props> = ({ driverId }) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
     const ws = new WebSocket(`ws://192.168.137.33:8080`);
 
@@ -28,11 +29,19 @@ const DriverCard: React.FC<Props> = ({ driverId }) => {
       console.log("Message from server:", message);
 
       if (message.type === "filepath") {
-        const audioUrl = `https://192.168.137.33:3001${message.data}`;
+        const audioUrl = `http://192.168.137.33:3001${message.data}`;
         const audio = new Audio(audioUrl);
-        audio.play().catch((error) => {
-          console.error("Error playing audio:", error);
-        });
+        audio
+          .play()
+          .then(() => {
+            setIsPlaying(true);
+            audio.onended = () => {
+              setIsPlaying(false);
+            };
+          })
+          .catch((error) => {
+            console.error("Error playing audio:", error);
+          });
       }
     };
 
@@ -56,7 +65,14 @@ const DriverCard: React.FC<Props> = ({ driverId }) => {
         {/* Additional content can be added here */}
       </CardContent>
       <CardFooter className="flex flex-col items-center pb-4">
-        <TopicGenerator audioSrc="/music.wav" />
+        {isPlaying && (
+          <iframe
+            src="/waveform.html"
+            className="w-full h-32 border-none"
+            title="Waveform Animation"
+            frameBorder="0"
+          ></iframe>
+        )}
       </CardFooter>
     </Card>
   );
